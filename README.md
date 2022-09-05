@@ -2,7 +2,7 @@
 ayacc (Ancient Yacc) is the version of Yacc present in UNIX V7 and UNIX/32V. It has been mostly updated, aside from a few warnings.
 
 ## Building ayacc
-*Requirements:
+* Requirements:
    * gcc
    * make
 * Use `make` to build.
