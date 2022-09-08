@@ -8,10 +8,6 @@
 # include "dextern"
 #include <stdio.h>
 #include <stdlib.h>
-#include <libintl.h>
-#include <locale.h>
-
-#define _(String) gettext(String)
 
 	/* variables used locally */
 
@@ -69,25 +65,25 @@ int zzrrconf = 0;
 void summary(){ /* output the summary on the tty */
 
 	if( foutput!=NULL ){
-		fprintf(_( foutput, "\n%d/%d terminals, %d/%d nonterminals\n", ntokens, NTERMS,
-			    nnonter, NNONTERM ));
-		fprintf(_( foutput, "%d/%d grammar rules, %d/%d states\n", nprod, NPROD, nstate, NSTATES ));
-		fprintf(_( foutput, "%d shift/reduce, %d reduce/reduce conflicts reported\n", zzsrconf, zzrrconf ));
-		fprintf(_( foutput, "%ld/%d working sets used\n", zzcwp-wsets,  WSETSIZE ));
-		fprintf(_( foutput, "memory: states,etc. %ld/%d, parser %ld/%d\n", zzmemsz-mem0, MEMSIZE,
-			    memp-amem, ACTSIZE ));
-		fprintf(_( foutput, "%d/%d distinct lookahead sets\n", nlset, LSETSIZE ));
-		fprintf(_( foutput, "%d extra closures\n", zzclose - 2*nstate ));
-		fprintf(_( foutput, "%d shift entries, %d exceptions\n", zzacent, zzexcp ));
-		fprintf(_( foutput, "%d goto entries\n", zzgoent ));
-		fprintf(_( foutput, "%d entries saved by goto default\n", zzgobest ));
+		fprintf( foutput, "\n%d/%d terminals, %d/%d nonterminals\n", ntokens, NTERMS,
+			    nnonter, NNONTERM );
+		fprintf( foutput, "%d/%d grammar rules, %d/%d states\n", nprod, NPROD, nstate, NSTATES );
+		fprintf( foutput, "%d shift/reduce, %d reduce/reduce conflicts reported\n", zzsrconf, zzrrconf );
+		fprintf( foutput, "%ld/%d working sets used\n", zzcwp-wsets,  WSETSIZE );
+		fprintf( foutput, "memory: states,etc. %ld/%d, parser %ld/%d\n", zzmemsz-mem0, MEMSIZE,
+			    memp-amem, ACTSIZE );
+		fprintf( foutput, "%d/%d distinct lookahead sets\n", nlset, LSETSIZE );
+		fprintf( foutput, "%d extra closures\n", zzclose - 2*nstate );
+		fprintf( foutput, "%d shift entries, %d exceptions\n", zzacent, zzexcp );
+		fprintf( foutput, "%d goto entries\n", zzgoent );
+		fprintf( foutput, "%d entries saved by goto default\n", zzgobest );
 		}
 	if( zzsrconf!=0 || zzrrconf!=0 ){
-		  fprintf(_( stdout,"\nconflicts: "));
-		  if( zzsrconf )fprintf(_( stdout, "%d shift/reduce" , zzsrconf ));
-		  if( zzsrconf && zzrrconf )fprintf(_( stdout, ", " ));
-		  if( zzrrconf )fprintf(_( stdout, "%d reduce/reduce" , zzrrconf ));
-		  fprintf(_( stdout, "\n" ));
+		  fprintf( stdout,"\nconflicts: ");
+		  if( zzsrconf )fprintf( stdout, "%d shift/reduce" , zzsrconf );
+		  if( zzsrconf && zzrrconf )fprintf( stdout, ", " );
+		  if( zzrrconf )fprintf( stdout, "%d reduce/reduce" , zzrrconf );
+		  fprintf( stdout, "\n" );
 		  }
 
 	fclose( ftemp );
@@ -98,9 +94,9 @@ void summary(){ /* output the summary on the tty */
 int error(s,a1) char *s; int a1; { /* write out error comment */
 	
 	++nerrors;
-	fprintf(_( stderr, "\n fatal error: "));
-	fprintf(_( stderr, s,a1));
-	fprintf(_( stderr, ", line %d\n", lineno ));
+	fprintf( stderr, "\n fatal error: ");
+	fprintf( stderr, s,a1);
+	fprintf( stderr, ", line %d\n", lineno );
 	if( !fatfl ) return;
 	summary();
 	exit(1);
@@ -146,7 +142,7 @@ void others(){ /* put out other arrays, copy the parsers */
 			if( (c=getc(finput)) != 'A' ) putc( '$', ftable );
 			else { /* copy actions */
 				faction = fopen( ACTNAME, "r" );
-				if( faction == NULL ) error(_( "cannot reopen action tempfile" ));
+				if( faction == NULL ) error( "cannot reopen action tempfile" );
 				while( (c=getc(faction) ) != EOF ) putc( c, ftable );
 				fclose(faction);
 				ZAPFILE(ACTNAME);
@@ -181,7 +177,7 @@ char *writem(pp) int *pp; { /* creates output string for item pointed to by pp *
 		*q = '\0';
 		if((i = *p) <= 0) break;
 		q = chcopy( q, symnam(i) );
-		if( q> &sarr[ISIZE-30] ) error(_( "item too big" ));
+		if( q> &sarr[ISIZE-30] ) error( "item too big" );
 		}
 
 	if( (i = *pp) < 0 ){ /* an item calling for a reduction */
@@ -216,13 +212,13 @@ int setunion(a, b) int register *a, *b; {
 void prlook(p) struct looksets *p;{
 	int register j, *pp;
 	pp = p->lset;
-	if( pp == 0 ) fprintf(_( foutput, "\tNULL"));
+	if( pp == 0 ) fprintf( foutput, "\tNULL");
 	else {
-		fprintf(_( foutput, " { " ));
+		fprintf( foutput, " { " );
 		TLOOP(j) {
-			if( BIT(pp,j) ) fprintf(_( foutput,  "%s ", symnam(j) ));
+			if( BIT(pp,j) ) fprintf( foutput,  "%s ", symnam(j) );
 			}
-		fprintf(_( foutput,  "}" ));
+		fprintf( foutput,  "}" );
 		}
 	}
 
@@ -243,7 +239,7 @@ int cpres(){ /* compute an array with the beginnings of  productions yielding gi
 			if (*prdptr[j] == c) *pmem++ =  prdptr[j]+1;
 			}
 		if(pres[i] == pmem){
-			error(_("nonterminal %s not defined!", nontrst[i].name));
+			error("nonterminal %s not defined!", nontrst[i].name);
 			}
 		}
 	pres[i] = pmem;
@@ -252,7 +248,7 @@ int cpres(){ /* compute an array with the beginnings of  productions yielding gi
 		summary();
 		exit(1);
 		}
-	if( pmem != &pyield[nprod] ) error(_( "internal Yacc error: pyield %d", pmem-&pyield[nprod] ));
+	if( pmem != &pyield[nprod] ) error( "internal Yacc error: pyield %d", pmem-&pyield[nprod] );
 	}
 
 int indebug = 0;
@@ -295,9 +291,9 @@ int cpfir() {
 	if( !indebug ) return;
 	if( (foutput!=NULL) ){
 		NTLOOP(i) {
-			fprintf(_( foutput,  "\n%s: ", nontrst[i].name ));
+			fprintf( foutput,  "\n%s: ", nontrst[i].name );
 			prlook( pfirst[i] );
-			fprintf(_( foutput,  " %d\n", pempty[i] ));
+			fprintf( foutput,  " %d\n", pempty[i] );
 			}
 		}
 	}
@@ -373,7 +369,7 @@ void putitem(ptr, lptr)  int *ptr;  struct looksets *lptr; {
 	register struct item *j;
 
 	if( pidebug && (foutput!=NULL) ) {
-		fprintf(_( foutput, "putitem(%s), state %d\n", writem(ptr), nstate ));
+		fprintf( foutput, "putitem(%s), state %d\n", writem(ptr), nstate );
 		}
 	j = pstate[nstate+1];
 	j->pitem = ptr;
@@ -544,13 +540,13 @@ int closure(i) /* generate the closure of state i */
 
 	if( cwp > zzcwp ) zzcwp = cwp;
 	if( cldebug && (foutput!=NULL) ){
-		fprintf(_( foutput, "\nState %d, nolook = %d\n", i, nolook ));
+		fprintf( foutput, "\nState %d, nolook = %d\n", i, nolook );
 		WSLOOP(wsets,u){
-			if( u->flag ) fprintf(_( foutput, "flag set!\n"));
+			if( u->flag ) fprintf( foutput, "flag set!\n");
 			u->flag = 0;
-			fprintf(_( foutput, "\t%s", writem(u->pitem)));
+			fprintf( foutput, "\t%s", writem(u->pitem));
 			prlook( &u->ws );
-			fprintf(_( foutput,  "\n" ));
+			fprintf( foutput,  "\n" );
 			}
 		}
 }
@@ -613,11 +609,11 @@ void stagen(){ /* generate the states */
 				}
 			}
 		if( gsdebug && (foutput!=NULL) ){
-			fprintf(_( foutput,  "%d: ", i ));
+			fprintf( foutput,  "%d: ", i );
 			NTLOOP(j) {
-				if( temp1[j] ) fprintf(_( foutput,  "%s %d, ", nontrst[j].name, temp1[j] ));
+				if( temp1[j] ) fprintf( foutput,  "%s %d, ", nontrst[j].name, temp1[j] );
 				}
-			fprintf(_( foutput, "\n"));
+			fprintf( foutput, "\n");
 			}
 		indgo[i] = apack( &temp1[1], nnonter-1 ) - 1; /* apack() is in y3.c */
 		goto more; /* we have done one goto; do some more */
