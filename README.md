@@ -13,7 +13,3 @@ ayacc (Ancient Yacc) is the version of Yacc present in UNIX V7 and UNIX/32V. It 
 ## Submitting patches, bug fixes, updates to the code
 
 Submit patches, bug fixes, and updates to the code by making pull requests.
-
-## Translation status
-
-ayacc will soon support additional languages other than English. Right now it is in preliminary status.
