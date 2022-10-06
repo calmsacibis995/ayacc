@@ -10,6 +10,8 @@ y1.o y2.o y3.o y4.o: dextern files
 install:
 	install -s ayacc $(DESTDIR)/usr/local/bin
 	install -c yaccpar $(DESTDIR)/usr/local/lib
+
+installman:
 	install ayacc.1 $(DESTDIR)/usr/local/share/man/man1
 clean:
 	rm -rf *.o ayacc yacc.acts yacc.tmp y.tab.c
